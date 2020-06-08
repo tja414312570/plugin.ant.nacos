@@ -1,7 +1,7 @@
 # plugin.ant.nacos
 plugin.ant使用Alibaba的nacos作为服务中心和配置中心的实现
 Ant.yc配置
-```json
+```xml
 Ant:{ 
 	##	基础配置
 	bufferType:"heap",	## 内存类型  heap 或 direct
