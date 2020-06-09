@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.YaNan.frame.ant.interfaces.AntDiscoveryService;
 import com.YaNan.frame.ant.interfaces.provider.AntRegisterSatus;
-import com.YaNan.frame.ant.model.AntCustomer;
 import com.YaNan.frame.ant.model.AntProvider;
 import com.YaNan.frame.ant.model.AntProviderSummary;
 import com.YaNan.frame.ant.model.RegisterResult;
+import com.YaNan.frame.ant.service.AntRuntimeService;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.alibaba.nacos.api.exception.NacosException;
@@ -54,6 +54,11 @@ public class AntNacosDiscovery implements AntDiscoveryService{
 		String result = nacosRuntime.getNamaingService().getServerStatus();
 		if(!"UP".equals(result))
 			throw new RuntimeException("nacos server result :"+result);
+	}
+
+	@Override
+	public void setAntRuntimeService(AntRuntimeService runtimeService) {
+		nacosRuntime.setRuntimeService(runtimeService);
 	}
 
 }

@@ -23,10 +23,13 @@ public class AntNacosConfigureFactory {
 		config.allowKeyNull();
 		properties.setProperty("serverAddr", config.getString("host"));
 		properties.setProperty("namespace", config.getString("namespace"));
-		System.out.println(config.getString("port"));
+		properties.setProperty("port",config.getString("port","8848"));
 		System.setProperty("nacos.server.port",config.getString("port","8848"));
-		System.out.println(System.getProperty("nacos.server.port"));
-		System.setProperty("nacos.client.appKey", config.getString("appKey",""));
+		properties.setProperty("appKey", config.getString("appKey",""));
+		System.setProperty("nacos.client.appKey",config.getString("appKey",""));
+		System.setProperty("NACOS.CONNECT.TIMEOUT",config.getString("timeout","1000"));
+		properties.setProperty("timeout", config.getString("timeout","1000"));
+		
 		return properties;
 	}
 	public static Properties build(String filePath) {
