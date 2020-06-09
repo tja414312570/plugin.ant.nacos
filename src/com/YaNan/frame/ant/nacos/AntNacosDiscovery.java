@@ -61,4 +61,9 @@ public class AntNacosDiscovery implements AntDiscoveryService{
 		nacosRuntime.setRuntimeService(runtimeService);
 	}
 
+	@Override
+	public void deregisterService(AntProviderSummary providerSummary) throws Exception {
+		nacosRuntime.deregisterInstance(providerSummary);
+	}
+
 }
