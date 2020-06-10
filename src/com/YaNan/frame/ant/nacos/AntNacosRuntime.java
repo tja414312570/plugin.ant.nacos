@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import com.YaNan.frame.ant.handler.AntClientHandler;
 import com.YaNan.frame.ant.interfaces.AntDiscoveryService;
-import com.YaNan.frame.ant.model.AntMessagePrototype;
 import com.YaNan.frame.ant.model.AntProvider;
 import com.YaNan.frame.ant.model.AntProviderSummary;
 import com.YaNan.frame.ant.service.AntRuntimeService;
@@ -67,21 +66,30 @@ public class AntNacosRuntime {
 		//设置事件监听
 		try {
 			namaingService.subscribe(name, event->{
-				System.out.println("事件"+name);
-				if(event == null)
+				if(event == null || ((NamingEvent)event).getInstances() == null ||  ((NamingEvent)event).getInstances().isEmpty())
 					return;
-				runtimeService.addServiceFromDiscoveryService(name);
-				//获取handler 
-				AntClientHandler handler =runtimeService.getClientHandler(name);
-				//获取所有的未完成的请求
-				List<AntMessagePrototype> list = runtimeService.getMessageQueue().getAllProcessingMessage(name);
-				//使用新的Handler继续发送消息
-				list.forEach(message->handler.write(message));
-				
-				System.out.println(((NamingEvent)event).getClusters());
-				System.out.println(((NamingEvent)event).getGroupName());
-			    System.out.println(((NamingEvent)event).getServiceName());
-			    System.out.println(((NamingEvent)event).getInstances());
+				List<Instance> instanceList = ((NamingEvent)event).getInstances();
+				//检查实例
+				try {
+					AntClientHandler handler = runtimeService.getServiceProviderMap().get(name);
+					if(handler == null) {
+						runtimeService.addServiceFromDiscoveryService(name);
+						return;
+					}
+					AntProviderSummary summary = handler.getAttribute(AntProviderSummary.class);
+					if(summary == null)
+						return;
+					for(Instance instance : instanceList) {
+						if(instance.getIp().equals(summary.getHost()) 
+								&& instance.getPort() == summary.getPort()) {
+							return;
+						}
+					}
+					runtimeService.tryRecoveryServiceAndNotifyDiscoveryService(handler);
+//					runtimeService.addServiceFromDiscoveryService(name);
+				}catch(Throwable e) {
+					e.printStackTrace();
+				}
 			});
 		} catch (NacosException e) {
 			e.printStackTrace();
@@ -96,5 +104,9 @@ public class AntNacosRuntime {
 	public void deregisterInstance(AntProviderSummary providerSummary) throws NacosException {
 		System.out.println("删除服务:"+providerSummary.getHost());
 		namaingService.deregisterInstance(providerSummary.getName(),providerSummary.getHost(), providerSummary.getPort());
+	}
+	public Instance getInstance(String name) throws NacosException {
+		trySubscribeService(name);
+		return namaingService.selectOneHealthyInstance(name);
 	}
 }

@@ -66,4 +66,16 @@ public class AntNacosDiscovery implements AntDiscoveryService{
 		nacosRuntime.deregisterInstance(providerSummary);
 	}
 
+	@Override
+	public AntProviderSummary getService(String name) throws Exception {
+		Instance instance = this.nacosRuntime.getInstance(name);
+		AntProviderSummary antProviderSummary = new AntProviderSummary();
+		antProviderSummary.setHost(instance.getIp());
+		antProviderSummary.setAttach(instance);
+		antProviderSummary.setName(instance.getClusterName());
+		antProviderSummary.setPort(instance.getPort());
+		antProviderSummary.setId(instance.getInstanceId());
+		return  antProviderSummary;
+	}
+
 }
