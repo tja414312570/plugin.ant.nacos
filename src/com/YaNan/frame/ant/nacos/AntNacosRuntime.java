@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.YaNan.frame.ant.handler.AntClientHandler;
 import com.YaNan.frame.ant.interfaces.AntDiscoveryService;
 import com.YaNan.frame.ant.model.AntProvider;
@@ -27,10 +30,13 @@ public class AntNacosRuntime {
 	private Properties properties;
 	private AntRuntimeService runtimeService;
 	private AntDiscoveryService nacosDiscovery;
+	private static Logger logger = LoggerFactory.getLogger(AntNacosRuntime.class);
 	List<String> eventList = new ArrayList<String>(16);
 	public AntNacosRuntime(String path) {
+		logger.debug("Ant Nacos servcie discovery!");
 		properties = AntNacosConfigureFactory.build(path);
 		try {
+			logger.debug("Ant Nacos servcie config "+properties);
 			//创建命名服务
 			namaingService = NamingFactory.createNamingService(properties);
 			//设置端口
@@ -63,16 +69,19 @@ public class AntNacosRuntime {
 		if(eventList.contains(name))
 			return;
 		eventList.add(name);
+		logger.debug("Ant Nacos subscribe sercie ["+name+"]");
 		//设置事件监听
 		try {
 			namaingService.subscribe(name, event->{
 				if(event == null || ((NamingEvent)event).getInstances() == null ||  ((NamingEvent)event).getInstances().isEmpty())
 					return;
 				List<Instance> instanceList = ((NamingEvent)event).getInstances();
+				logger.debug("Ant Nacos Event ["+name+"] instance "+instanceList);
 				//检查实例
 				try {
 					AntClientHandler handler = runtimeService.getServiceProviderMap().get(name);
 					if(handler == null) {
+						logger.debug("Ant Nacos add service "+name);
 						runtimeService.addServiceFromDiscoveryService(name);
 						return;
 					}
@@ -85,8 +94,8 @@ public class AntNacosRuntime {
 							return;
 						}
 					}
+					logger.debug("Ant Nacos recovery servcie ["+name+"]");
 					runtimeService.tryRecoveryServiceAndNotifyDiscoveryService(handler);
-//					runtimeService.addServiceFromDiscoveryService(name);
 				}catch(Throwable e) {
 					e.printStackTrace();
 				}
@@ -102,11 +111,12 @@ public class AntNacosRuntime {
 		this.runtimeService = runtimeService;
 	}
 	public void deregisterInstance(AntProviderSummary providerSummary) throws NacosException {
-		System.out.println("删除服务:"+providerSummary.getHost());
+		logger.debug("Ant Nacos delete servcie ["+providerSummary+"]");
 		namaingService.deregisterInstance(providerSummary.getName(),providerSummary.getHost(), providerSummary.getPort());
 	}
 	public Instance getInstance(String name) throws NacosException {
 		trySubscribeService(name);
+		logger.debug("Ant Nacos query servcie ["+name+"]");
 		return namaingService.selectOneHealthyInstance(name);
 	}
 }
