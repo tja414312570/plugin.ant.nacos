@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.YaNan.frame.ant.interfaces.AntDiscoveryService;
-import com.YaNan.frame.ant.interfaces.provider.AntRegisterSatus;
 import com.YaNan.frame.ant.model.AntProvider;
 import com.YaNan.frame.ant.model.AntProviderSummary;
 import com.YaNan.frame.ant.model.RegisterResult;
+import com.YaNan.frame.ant.protocol.ant.interfacer.AntRegisterSatus;
 import com.YaNan.frame.ant.service.AntRuntimeService;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;

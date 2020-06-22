@@ -9,7 +9,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.ant.handler.AntClientHandler;
+import com.YaNan.frame.ant.handler.AntServiceInstance;
 import com.YaNan.frame.ant.interfaces.AntDiscoveryService;
 import com.YaNan.frame.ant.model.AntProvider;
 import com.YaNan.frame.ant.model.AntProviderSummary;
@@ -79,7 +79,7 @@ public class AntNacosRuntime {
 				logger.debug("Ant Nacos Event ["+name+"] instance "+instanceList);
 				//检查实例
 				try {
-					AntClientHandler handler = runtimeService.getServiceProviderMap().get(name);
+					AntServiceInstance handler = runtimeService.getServiceProviderMap().get(name);
 					if(handler == null) {
 						logger.debug("Ant Nacos add service "+name);
 						runtimeService.addServiceFromDiscoveryService(name);
