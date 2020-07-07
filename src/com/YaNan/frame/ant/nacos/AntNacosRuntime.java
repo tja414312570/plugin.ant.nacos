@@ -16,7 +16,7 @@ import com.YaNan.frame.ant.model.AntProviderSummary;
 import com.YaNan.frame.ant.service.AntRuntimeService;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.utils.reflect.cache.ClassHelper;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.YaNan.frame.utils.reflect.AppClassLoader;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
@@ -44,7 +44,7 @@ public class AntNacosRuntime {
 			serverProxyField.setAccessible(true);
 			NamingProxy serverProxy = (NamingProxy) serverProxyField.get(namaingService);
 			serverProxyField.setAccessible(false);
-			ClassLoader loader = new ClassLoader(serverProxy);
+			AppClassLoader loader = new AppClassLoader(serverProxy);
 			loader.set("serverPort", Integer.parseInt(properties.getProperty("port")));
 			//添加AntDiscoverService
 			PlugsFactory.getInstance().addPlugs(AntNacosDiscovery.class);
