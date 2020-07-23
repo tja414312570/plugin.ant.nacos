@@ -1,20 +1,21 @@
-package com.YaNan.frame.ant.nacos;
+package com.yanan.frame.ant.nacos;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import com.YaNan.frame.ant.exception.AntInitException;
-import com.YaNan.frame.plugin.exception.PluginInitException;
-import com.YaNan.frame.utils.asserts.Assert;
-import com.YaNan.frame.utils.resource.AbstractResourceEntry;
-import com.YaNan.frame.utils.resource.ResourceManager;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import com.yanan.frame.plugin.PlugsFactory.STREAM_TYPT;
+import com.yanan.frame.ant.exception.AntInitException;
+import com.yanan.frame.plugin.exception.PluginInitException;
+import com.yanan.utils.asserts.Assert;
+import com.yanan.utils.resource.AbstractResourceEntry;
+import com.yanan.utils.resource.ResourceManager;
 
 public class AntNacosConfigureFactory {
+	private static final int CONF = 0;
+	private static final int PROPERTIES = 1;
 	public static Properties build(Config config) {
 		Assert.isNull(config, "nacos config is null");
 		Assert.isFalse(config.hasPath("nacos"), "could not found nacos config at this config "+config);
@@ -37,16 +38,16 @@ public class AntNacosConfigureFactory {
 		AbstractResourceEntry resourceManager =ResourceManager.getResource(filePath);
 		Assert.isNull(resourceManager,"the ant config file ["+filePath+"] is not exists!");
 		if(filePath.endsWith(".yc")) {
-			return build(resourceManager.getInputStream(),STREAM_TYPT.CONF);
+			return build(resourceManager.getInputStream(),CONF);
 		}
 //		if(filePath.endsWith(".xml"))
 //			return build(resourceManager.getInputStream(),STREAM_TYPT.XML);
 		if(filePath.endsWith(".properties")) {
-			return build(resourceManager.getInputStream(),STREAM_TYPT.PROPERTIES);
+			return build(resourceManager.getInputStream(),PROPERTIES);
 		}
 		throw new AntInitException("the type of this file is not be support!");
 	}
-	public static Properties build(InputStream inputStream,STREAM_TYPT type) {
+	public static Properties build(InputStream inputStream,int type) {
 		Assert.isNull(inputStream, "nacos config is null");
 		try {
 			switch(type) {

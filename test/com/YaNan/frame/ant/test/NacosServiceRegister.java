@@ -1,22 +1,23 @@
 package com.YaNan.frame.ant.test;
 
 import java.lang.reflect.InvocationTargetException;
-import com.YaNan.frame.ant.AntContext;
-import com.YaNan.frame.ant.AntFactory;
-import com.YaNan.frame.ant.handler.AntMeessageSerialHandler;
-import com.YaNan.frame.ant.nacos.AntNacosRuntime;
-import com.YaNan.frame.ant.protocol.ant.command.DefaultAntClientServiceImpl;
+
 import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
+import com.yanan.frame.ant.AntContext;
+import com.yanan.frame.ant.AntFactory;
+import com.yanan.frame.ant.handler.AntMeessageSerialHandler;
+import com.yanan.frame.ant.nacos.AntNacosRuntime;
+import com.yanan.frame.ant.protocol.ant.command.DefaultAntClientServiceImpl;
 import com.yanan.frame.plugin.PlugsFactory;
 
 public class NacosServiceRegister {
 	
 	
 	public static void main(String[] args) throws NacosException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
-		PlugsFactory.getInstance().addPlugs(AntMeessageSerialHandler.class);//消息序列化
-		PlugsFactory.getInstance().addPlugs(DefaultAntClientServiceImpl.class);
+		PlugsFactory.getInstance().addDefinition(AntMeessageSerialHandler.class);//消息序列化
+		PlugsFactory.getInstance().addDefinition(DefaultAntClientServiceImpl.class);
 //		PlugsFactory.getInstance().addPlugs(AntNacosDiscovery.class);
 		AntNacosRuntime antNacosRuntime = new AntNacosRuntime("classpath:Ant.yc");
 		//		registerInstance：注册实例。
@@ -33,7 +34,7 @@ public class NacosServiceRegister {
 		AntContext antContext = AntFactory.build("classpath:Ant.yc");
 		antContext.start();
 		
-		ConfigService configService = ConfigFactory.createConfigService(properties);
+//		ConfigService configService = ConfigFactory.createConfigService(properties);
 		//设置服务中心
 //		Properties properties = new Properties();
 //		properties.setProperty("serverAddr", "127.0.0.1");

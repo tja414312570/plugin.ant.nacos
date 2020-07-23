@@ -1,4 +1,4 @@
-package com.YaNan.frame.ant.nacos;
+package com.yanan.frame.ant.nacos;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,13 +9,6 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.ant.handler.AntServiceInstance;
-import com.YaNan.frame.ant.interfaces.AntDiscoveryService;
-import com.YaNan.frame.ant.model.AntProvider;
-import com.YaNan.frame.ant.model.AntProviderSummary;
-import com.YaNan.frame.ant.service.AntRuntimeService;
-import com.YaNan.frame.utils.reflect.cache.ClassHelper;
-import com.YaNan.frame.utils.reflect.AppClassLoader;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
@@ -23,7 +16,14 @@ import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.client.naming.NacosNamingService;
 import com.alibaba.nacos.client.naming.net.NamingProxy;
+import com.yanan.frame.ant.handler.AntServiceInstance;
+import com.yanan.frame.ant.interfaces.AntDiscoveryService;
+import com.yanan.frame.ant.model.AntProvider;
+import com.yanan.frame.ant.model.AntProviderSummary;
+import com.yanan.frame.ant.service.AntRuntimeService;
 import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.utils.reflect.AppClassLoader;
+import com.yanan.utils.reflect.cache.ClassHelper;
 
 public class AntNacosRuntime {
 	private NamingService namaingService;
@@ -47,8 +47,8 @@ public class AntNacosRuntime {
 			AppClassLoader loader = new AppClassLoader(serverProxy);
 			loader.set("serverPort", Integer.parseInt(properties.getProperty("port")));
 			//添加AntDiscoverService
-			PlugsFactory.getInstance().addPlugs(AntNacosDiscovery.class);
-			nacosDiscovery = PlugsFactory.getPlugsInstance(AntDiscoveryService.class);
+			PlugsFactory.getInstance().addDefinition(AntNacosDiscovery.class);
+			nacosDiscovery = PlugsFactory.getPluginsInstance(AntDiscoveryService.class);
 			((AntNacosDiscovery)nacosDiscovery).setNacosRuntime(this);
 		} catch (NacosException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException("failed to init nacos server!",e);
