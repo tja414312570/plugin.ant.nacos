@@ -9,10 +9,10 @@ import com.YaNan.frame.ant.model.AntProviderSummary;
 import com.YaNan.frame.ant.model.RegisterResult;
 import com.YaNan.frame.ant.protocol.ant.interfacer.AntRegisterSatus;
 import com.YaNan.frame.ant.service.AntRuntimeService;
-import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import com.yanan.frame.plugin.ProxyModel;
 
 @Register(model=ProxyModel.CGLIB)
 public class AntNacosDiscovery implements AntDiscoveryService{

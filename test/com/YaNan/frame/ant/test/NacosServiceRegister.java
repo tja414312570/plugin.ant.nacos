@@ -1,30 +1,15 @@
 package com.YaNan.frame.ant.test;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Properties;
-
 import com.YaNan.frame.ant.AntContext;
-import com.YaNan.frame.ant.AntContextConfigure;
 import com.YaNan.frame.ant.AntFactory;
-import com.YaNan.frame.ant.handler.AntClientHandler;
 import com.YaNan.frame.ant.handler.AntMeessageSerialHandler;
-import com.YaNan.frame.ant.implement.DefaultAntClientServiceImpl;
-import com.YaNan.frame.ant.nacos.AntNacosConfigureFactory;
-import com.YaNan.frame.ant.nacos.AntNacosDiscovery;
 import com.YaNan.frame.ant.nacos.AntNacosRuntime;
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.utils.resource.PackageScanner;
-import com.YaNan.frame.utils.resource.PackageScanner.ClassInter;
-import com.YaNan.frame.utils.resource.ResourceManager;
+import com.YaNan.frame.ant.protocol.ant.command.DefaultAntClientServiceImpl;
+import com.alibaba.nacos.api.config.ConfigFactory;
+import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
-import com.alibaba.nacos.api.naming.NamingFactory;
-import com.alibaba.nacos.api.naming.NamingService;
-import com.alibaba.nacos.api.naming.listener.Event;
-import com.alibaba.nacos.api.naming.listener.EventListener;
-import com.alibaba.nacos.api.naming.listener.NamingEvent;
-import com.alibaba.nacos.client.naming.net.NamingProxy;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.yanan.frame.plugin.PlugsFactory;
 
 public class NacosServiceRegister {
 	
@@ -46,10 +31,9 @@ public class NacosServiceRegister {
 //		getServicesOfServer：获取命名空间（namespace)下的所有服务名。【注：此方法有个小坑，参数pageNo要从1开始】
 		//启动Ant
 		AntContext antContext = AntFactory.build("classpath:Ant.yc");
-		antContext.init();
 		antContext.start();
 		
-	
+		ConfigService configService = ConfigFactory.createConfigService(properties);
 		//设置服务中心
 //		Properties properties = new Properties();
 //		properties.setProperty("serverAddr", "127.0.0.1");

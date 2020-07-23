@@ -14,7 +14,6 @@ import com.YaNan.frame.ant.interfaces.AntDiscoveryService;
 import com.YaNan.frame.ant.model.AntProvider;
 import com.YaNan.frame.ant.model.AntProviderSummary;
 import com.YaNan.frame.ant.service.AntRuntimeService;
-import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.utils.reflect.cache.ClassHelper;
 import com.YaNan.frame.utils.reflect.AppClassLoader;
 import com.alibaba.nacos.api.exception.NacosException;
@@ -24,6 +23,7 @@ import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.client.naming.NacosNamingService;
 import com.alibaba.nacos.client.naming.net.NamingProxy;
+import com.yanan.frame.plugin.PlugsFactory;
 
 public class AntNacosRuntime {
 	private NamingService namaingService;

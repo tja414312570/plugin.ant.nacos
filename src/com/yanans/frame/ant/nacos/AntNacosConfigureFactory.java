@@ -6,13 +6,13 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 import com.YaNan.frame.ant.exception.AntInitException;
-import com.YaNan.frame.plugin.PluginInitException;
-import com.YaNan.frame.plugin.PlugsFactory.STREAM_TYPT;
+import com.YaNan.frame.plugin.exception.PluginInitException;
 import com.YaNan.frame.utils.asserts.Assert;
 import com.YaNan.frame.utils.resource.AbstractResourceEntry;
 import com.YaNan.frame.utils.resource.ResourceManager;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import com.yanan.frame.plugin.PlugsFactory.STREAM_TYPT;
 
 public class AntNacosConfigureFactory {
 	public static Properties build(Config config) {
