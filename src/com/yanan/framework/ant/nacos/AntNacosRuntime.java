@@ -1,5 +1,6 @@
-package com.yanan.frame.ant.nacos;
+package com.yanan.framework.ant.nacos;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -16,12 +17,12 @@ import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.client.naming.NacosNamingService;
 import com.alibaba.nacos.client.naming.net.NamingProxy;
-import com.yanan.frame.ant.handler.AntServiceInstance;
-import com.yanan.frame.ant.interfaces.AntDiscoveryService;
-import com.yanan.frame.ant.model.AntProvider;
-import com.yanan.frame.ant.model.AntProviderSummary;
-import com.yanan.frame.ant.service.AntRuntimeService;
-import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.framework.ant.handler.AntServiceInstance;
+import com.yanan.framework.ant.interfaces.AntDiscoveryService;
+import com.yanan.framework.ant.model.AntProvider;
+import com.yanan.framework.ant.model.AntProviderSummary;
+import com.yanan.framework.ant.service.AntRuntimeService;
+import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.utils.reflect.AppClassLoader;
 import com.yanan.utils.reflect.cache.ClassHelper;
 
@@ -34,8 +35,8 @@ public class AntNacosRuntime {
 	List<String> eventList = new ArrayList<String>(16);
 	public AntNacosRuntime(String path) {
 		logger.debug("Ant Nacos servcie discovery!");
-		properties = AntNacosConfigureFactory.build(path);
 		try {
+			properties = AntNacosConfigureFactory.build(path);
 			logger.debug("Ant Nacos servcie config "+properties);
 			//创建命名服务
 			namaingService = NamingFactory.createNamingService(properties);
@@ -50,7 +51,7 @@ public class AntNacosRuntime {
 			PlugsFactory.getInstance().addDefinition(AntNacosDiscovery.class);
 			nacosDiscovery = PlugsFactory.getPluginsInstance(AntDiscoveryService.class);
 			((AntNacosDiscovery)nacosDiscovery).setNacosRuntime(this);
-		} catch (NacosException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (NacosException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | IOException e) {
 			throw new RuntimeException("failed to init nacos server!",e);
 		}
 	}
