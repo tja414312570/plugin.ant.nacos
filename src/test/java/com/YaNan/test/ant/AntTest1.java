@@ -1,7 +1,7 @@
 package com.YaNan.test.ant;
 
-import com.yanan.frame.plugin.annotations.Register;
-import com.yanan.frame.plugin.annotations.Service;
+import com.yanan.framework.plugin.annotations.Register;
+import com.yanan.framework.plugin.annotations.Service;
 
 @Register
 public class AntTest1 implements AntService1{

@@ -1,21 +1,20 @@
 package com.YaNan.frame.ant.test;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import com.alibaba.nacos.api.config.ConfigFactory;
-import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
-import com.yanan.frame.ant.AntContext;
-import com.yanan.frame.ant.AntFactory;
-import com.yanan.frame.ant.handler.AntMeessageSerialHandler;
-import com.yanan.frame.ant.nacos.AntNacosRuntime;
-import com.yanan.frame.ant.protocol.ant.command.DefaultAntClientServiceImpl;
-import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.framework.ant.AntContext;
+import com.yanan.framework.ant.AntFactory;
+import com.yanan.framework.ant.handler.AntMeessageSerialHandler;
+import com.yanan.framework.ant.nacos.AntNacosRuntime;
+import com.yanan.framework.ant.protocol.ant.command.DefaultAntClientServiceImpl;
+import com.yanan.framework.plugin.PlugsFactory;
 
 public class NacosServiceRegister {
 	
 	
-	public static void main(String[] args) throws NacosException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException {
+	public static void main(String[] args) throws NacosException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException, IOException {
 		PlugsFactory.getInstance().addDefinition(AntMeessageSerialHandler.class);//消息序列化
 		PlugsFactory.getInstance().addDefinition(DefaultAntClientServiceImpl.class);
 //		PlugsFactory.getInstance().addPlugs(AntNacosDiscovery.class);
