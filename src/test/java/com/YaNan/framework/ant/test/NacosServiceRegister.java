@@ -3,10 +3,13 @@ package com.YaNan.framework.ant.test;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import com.YaNan.test.ant.AntService1;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.yanan.framework.ant.AntContext;
 import com.yanan.framework.ant.AntFactory;
+import com.yanan.framework.ant.ProertiesWrapper;
 import com.yanan.framework.ant.handler.AntMeessageSerialHandler;
+import com.yanan.framework.ant.interfaces.AntService;
 import com.yanan.framework.ant.nacos.AntNacosRuntime;
 import com.yanan.framework.ant.protocol.ant.command.DefaultAntClientServiceImpl;
 import com.yanan.framework.plugin.PlugsFactory;
@@ -15,9 +18,10 @@ public class NacosServiceRegister {
 	
 	
 	public static void main(String[] args) throws NacosException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InterruptedException, IOException {
-		PlugsFactory.getInstance().addDefinition(AntMeessageSerialHandler.class);//消息序列化
-		PlugsFactory.getInstance().addDefinition(DefaultAntClientServiceImpl.class);
-//		PlugsFactory.getInstance().addPlugs(AntNacosDiscovery.class);
+		PlugsFactory.getInstance().addScanPath(NacosServiceRegister.class);
+		PlugsFactory.init("classpath:plugin.yc");
+		AntService1 service = PlugsFactory.getPluginsInstance(AntService1.class);
+		System.out.println(service.add(1, 3));
 		AntNacosRuntime antNacosRuntime = new AntNacosRuntime("classpath:Ant.yc");
 		//		registerInstance：注册实例。
 //		deregisterInstance：注销实例。

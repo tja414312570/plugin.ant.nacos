@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>com.github.tja414312570</groupId>
 			<artifactId>plugin.ant.core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba.nacos</groupId>
@@ -60,7 +60,6 @@
 		<testResources>
 			<testResource>
 				<directory>src/test/resource</directory>
-				<targetPath>target/test-class</targetPath>
 			</testResource>
 			<testResource>
 				<directory>src/main/java</directory>
