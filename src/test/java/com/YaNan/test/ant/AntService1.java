@@ -1,13 +1,12 @@
 package com.YaNan.test.ant;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 
-public interface AntService1 {
-	public int add(int a,int b);
-	
-	void exec(Runnable runable);
-	
-	InputStream getInputStream(File file) throws FileNotFoundException;
+public interface AntService1
+{
+    int add(final int p0, final int p1);
+    
+    void exec(final Runnable p0);
+    
+    InputStream getInputStream(final File p0) throws FileNotFoundException;
 }

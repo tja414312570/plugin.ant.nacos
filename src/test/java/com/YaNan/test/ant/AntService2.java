@@ -1,7 +1,6 @@
 package com.YaNan.test.ant;
 
-import com.yanan.framework.ant.annotations.Ant;
-
-public interface AntService2 {
-	public int add(int a,int b);
+public interface AntService2
+{
+    int add(final int p0, final int p1);
 }

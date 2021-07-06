@@ -1,0 +1,6 @@
+###################### plugin list
+plugins:[
+		com.yanan.framework.ant.protocol.ant.AntClientService,
+		com.yanan.framework.ant.handler.AntMeessageSerialHandler,
+		com.yanan.framework.ant.protocol.ant.command.DefaultAntClientServiceImpl
+	]
