@@ -49,8 +49,15 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance> i
         return null;
     }
     
-    public void registerChannel(final NacosInstance name, final ServerMessageChannel<?> channel) {
-        System.err.println("注册通道:" + name + "--->" + channel);
+    public void registerChannel(final NacosInstance instance, final ServerMessageChannel<?> channel) {
+        System.err.println("注册通道:" + instance + "--->" + channel);
+        try {
+			namaingService.registerInstance(instance.getName(),
+					instance.getHost(), instance.getPort(), instance.getName());
+		} catch (NacosException e) {
+			e.printStackTrace();
+			logger.error("注册通道失败["+instance+"]["+channel+"]",e);
+		}
     }
     
     public <T> List<MessageChannel<T>> getChannelList(final NacosInstance name) {
