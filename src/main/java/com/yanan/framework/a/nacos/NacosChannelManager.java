@@ -11,20 +11,23 @@ import org.slf4j.Logger;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
+import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.client.naming.NacosNamingService;
 import com.alibaba.nacos.client.naming.net.NamingProxy;
 import com.yanan.framework.a.core.MessageChannel;
 import com.yanan.framework.a.core.cluster.AbstractChannelManager;
 import com.yanan.framework.a.core.cluster.ChannelManager;
 import com.yanan.framework.a.core.server.ServerMessageChannel;
+import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.framework.plugin.annotations.Register;
 import com.yanan.framework.plugin.annotations.Service;
 import com.yanan.utils.asserts.Assert;
 import com.yanan.utils.reflect.AppClassLoader;
+import com.yanan.utils.reflect.TypeToken;
 import com.yanan.utils.reflect.cache.ClassHelper;
 
 @Register
-public class NacosChannelManager extends AbstractChannelManager<NacosInstance> implements ChannelManager<NacosInstance>
+public class NacosChannelManager extends AbstractChannelManager<NacosInstance,NacosInstance> implements ChannelManager<NacosInstance>
 {
 	@Service
 	private Logger logger;
@@ -45,10 +48,6 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance> i
 		return properties;
 	}
 
-	public <T> MessageChannel<T> getChannel(final NacosInstance name) {
-        return null;
-    }
-    
     public void registerChannel(final NacosInstance instance, final ServerMessageChannel<?> channel) {
         System.err.println("注册通道:" + instance + "--->" + channel);
         try {
@@ -58,14 +57,6 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance> i
 			e.printStackTrace();
 			logger.error("注册通道失败["+instance+"]["+channel+"]",e);
 		}
-    }
-    
-    public <T> List<MessageChannel<T>> getChannelList(final NacosInstance name) {
-        return null;
-    }
-    
-    public <T> Map<String, List<MessageChannel<T>>> getAllChannel() {
-        return null;
     }
     
     public void start() {
@@ -90,4 +81,28 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance> i
     
     public void close() {
     }
+	@Override
+	public <T, I> Map<String, List<MessageChannel<T>>> getAllChannel() {
+		return null;
+	}
+	@Override
+	protected <T> List<MessageChannel<T>> getChannelInstanceList(NacosInstance serverName) {
+		return null;
+	}
+	@Override
+	public <T> MessageChannel<T> getChannelInstance(NacosInstance name) {
+		System.err.println("通道实例:"+name);
+		Instance instance;
+		try {
+			instance = namaingService.selectOneHealthyInstance(name.getName());
+			System.out.println(instance);
+			MessageChannel<T> messageChannel = PlugsFactory.getPluginsInstance(new TypeToken<MessageChannel<T>>(){}.getTypeClass());
+			messageChannel.open();
+			return messageChannel;
+		} catch (NacosException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }

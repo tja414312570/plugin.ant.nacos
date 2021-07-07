@@ -3,6 +3,7 @@ package com.YaNan.frame.ant.test;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.yanan.framework.a.channel.socket.server.MessageChannelCreateListener;
 import com.yanan.framework.a.core.MessageChannel;
 import com.yanan.framework.a.core.cluster.ChannelManager;
 import com.yanan.framework.a.core.server.ServerMessageChannel;
@@ -15,7 +16,8 @@ import com.yanan.utils.resource.ResourceManager;
 
 public class DiscoveryServiceServerTest
 {
-    public static void main(final String[] args) throws InterruptedException, IOException {
+    @SuppressWarnings("unchecked")
+	public static void main(final String[] args) throws InterruptedException, IOException {
     	System.out.println(ResourceManager.getClassPath(MessageChannel.class)[0] + "**");
     	Environment.getEnviroment().registEventListener(PlugsFactory.getInstance().getEventSource(),event->{
 //    		if( ((PluginEvent)event).getEventType() == EventType.add_registerDefinition)
@@ -30,14 +32,21 @@ public class DiscoveryServiceServerTest
         
         Properties properties = NacosConfigureFactory.build("classpath:ant.yc");
         
-        
         final ChannelManager<?> server = PlugsFactory.getPluginsInstance(ChannelManager.class,properties);
         
-        final ServerMessageChannel<?> client = PlugsFactory.getPluginsInstance(ServerMessageChannel.class);
-        
+        final ServerMessageChannel<String> client = PlugsFactory.getPluginsInstance(ServerMessageChannel.class);
+        client.onChannelCreate(new MessageChannelCreateListener<String>() {
+
+			@Override
+			public void onCreate(MessageChannel<String> messageChannel) {
+				messageChannel.accept(message->{
+					System.out.println("得到消息:"+message);
+				});
+			}
+		});
         server.start(client);
         
-        final MessageChannel<?> messageChannel = (MessageChannel<?>)server.getChannel(null);
+        final MessageChannel<?> messageChannel = (MessageChannel<?>)server.getChannel("default");
 		System.out.println(messageChannel);
 	}
 }

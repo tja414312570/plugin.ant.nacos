@@ -6,6 +6,7 @@ public class NacosInstance
     private String name;
     private String host;
     private int port;
+    private String clusterName; 
     
     public String getGroup() {
         return this.group;
@@ -40,7 +41,16 @@ public class NacosInstance
     }
     
     @Override
-    public String toString() {
-        return "NacosInstance [group=" + this.group + ", name=" + this.name + ", host=" + this.host + ", port=" + this.port + "]";
-    }
+	public String toString() {
+		return "NacosInstance [group=" + group + ", name=" + name + ", host=" + host + ", port=" + port
+				+ ", clusterName=" + clusterName + "]";
+	}
+
+	public String getClusterName() {
+		return clusterName;
+	}
+
+	public void setClusterName(String clusterName) {
+		this.clusterName = clusterName;
+	}
 }
