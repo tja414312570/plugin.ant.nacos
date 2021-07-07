@@ -16,14 +16,13 @@ import com.alibaba.nacos.client.naming.NacosNamingService;
 import com.alibaba.nacos.client.naming.net.NamingProxy;
 import com.yanan.framework.a.core.MessageChannel;
 import com.yanan.framework.a.core.cluster.AbstractChannelManager;
+import com.yanan.framework.a.core.cluster.ChannelCreator;
 import com.yanan.framework.a.core.cluster.ChannelManager;
 import com.yanan.framework.a.core.server.ServerMessageChannel;
-import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.framework.plugin.annotations.Register;
 import com.yanan.framework.plugin.annotations.Service;
 import com.yanan.utils.asserts.Assert;
 import com.yanan.utils.reflect.AppClassLoader;
-import com.yanan.utils.reflect.TypeToken;
 import com.yanan.utils.reflect.cache.ClassHelper;
 
 @Register
@@ -33,6 +32,9 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance,Na
 	private Logger logger;
 	private NamingService namaingService;
 	private Properties properties;
+	
+	@Service(attribute = "com.alibaba.nacos.api.naming.pojo.Instance")
+	private ChannelCreator<?, Instance> channelCreator;
     public Logger getLogger() {
 		return logger;
 	}
@@ -89,20 +91,21 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance,Na
 	protected <T> List<MessageChannel<T>> getChannelInstanceList(NacosInstance serverName) {
 		return null;
 	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> MessageChannel<T> getChannelInstance(NacosInstance name) {
-		System.err.println("通道实例:"+name);
+		logger.debug("通道实例:"+name);
 		Instance instance;
 		try {
 			instance = namaingService.selectOneHealthyInstance(name.getName());
+			logger.debug("实例信息:"+instance);
 			System.out.println(instance);
-			MessageChannel<T> messageChannel = PlugsFactory.getPluginsInstance(new TypeToken<MessageChannel<T>>(){}.getTypeClass());
+			MessageChannel<T> messageChannel =(MessageChannel<T>) channelCreator.creatorChannel(instance);
+			logger.debug("得到通道:"+messageChannel);
 			messageChannel.open();
 			return messageChannel;
 		} catch (NacosException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		
-		return null;
 	}
 }
