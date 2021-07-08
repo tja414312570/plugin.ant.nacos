@@ -46,7 +46,7 @@ public class DiscoveryServiceServerTest
 		});
         server.start(client);
         
-        final MessageChannel<?> messageChannel = (MessageChannel<?>)server.getChannel("default");
-		System.out.println(messageChannel);
+//        final MessageChannel<?> messageChannel = (MessageChannel<?>)server.getChannel("default");
+//		System.out.println(messageChannel);
 	}
 }
