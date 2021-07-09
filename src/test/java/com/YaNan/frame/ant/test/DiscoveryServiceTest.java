@@ -1,11 +1,12 @@
 package com.YaNan.frame.ant.test;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.Properties;
 
+import com.YaNan.test.ant.Request;
 import com.yanan.framework.a.core.MessageChannel;
 import com.yanan.framework.a.core.cluster.ChannelManager;
+import com.yanan.framework.a.dispatcher.ChannelDispatcher;
 import com.yanan.framework.a.nacos.NacosConfigureFactory;
 import com.yanan.framework.ant.nacos.AntNacosConfigureFactory;
 import com.yanan.framework.plugin.Environment;
@@ -20,8 +21,8 @@ public class DiscoveryServiceTest {
 	public static void main(final String[] args) throws InterruptedException, IOException {
 
 		Environment.getEnviroment().registEventListener(PlugsFactory.getInstance().getEventSource(),event->{
-    		if( ((PluginEvent)event).getEventType() == EventType.add_registerDefinition)
-			System.err.println(((RegisterDefinition)((PluginEvent)event).getEventContent()).getRegisterClass());
+//    		if( ((PluginEvent)event).getEventType() == EventType.add_registerDefinition)
+//			System.err.println(((RegisterDefinition)((PluginEvent)event).getEventContent()).getRegisterClass());
 		});
 		
 		PlugsFactory.init(ResourceManager.getResource("classpath:plugin.yc"),
@@ -35,8 +36,14 @@ public class DiscoveryServiceTest {
 
 		server.start();
 
-		MessageChannel<String> messageChannel =server.getChannel("defaultName");
-		System.err.println(messageChannel);
-		messageChannel.transport("Hello");
+		ChannelDispatcher channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
+		System.err.println(channelDispatcher);
+		channelDispatcher.bind(server);
+		
+		Request request = PlugsFactory.getPluginsInstance(Request.class);
+		System.err.println(request);
+//		MessageChannel<String> messageChannel =server.getChannel("defaultName");
+//		System.err.println(messageChannel);
+//		messageChannel.transport("Hello");
 	}
 }

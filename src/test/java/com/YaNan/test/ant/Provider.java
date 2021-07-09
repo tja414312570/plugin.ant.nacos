@@ -2,7 +2,7 @@ package com.YaNan.test.ant;
 
 import java.io.*;
 
-public interface AntService1
+public interface Provider
 {
     int add(final int p0, final int p1);
     
