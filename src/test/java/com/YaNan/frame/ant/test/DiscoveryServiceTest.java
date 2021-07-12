@@ -7,14 +7,12 @@ import com.YaNan.test.ant.Request;
 import com.yanan.framework.a.core.MessageChannel;
 import com.yanan.framework.a.core.cluster.ChannelManager;
 import com.yanan.framework.a.dispatcher.ChannelDispatcher;
+import com.yanan.framework.a.dispatcher.Invoker;
 import com.yanan.framework.a.nacos.NacosConfigureFactory;
 import com.yanan.framework.ant.nacos.AntNacosConfigureFactory;
 import com.yanan.framework.plugin.Environment;
-import com.yanan.framework.plugin.PluginEvent;
-import com.yanan.framework.plugin.PluginEvent.EventType;
 import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.framework.plugin.decoder.StandScanResource;
-import com.yanan.framework.plugin.definition.RegisterDefinition;
 import com.yanan.utils.resource.ResourceManager;
 
 public class DiscoveryServiceTest {
@@ -36,9 +34,15 @@ public class DiscoveryServiceTest {
 
 		server.start();
 
-		ChannelDispatcher channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
+		ChannelDispatcher<?> channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
 		System.err.println(channelDispatcher);
 		channelDispatcher.bind(server);
+		
+		Invoker invoker = PlugsFactory.getPluginsInstance(Invoker.class);
+		
+		channelDispatcher.bind(invoker);
+		
+		channelDispatcher.request(null);
 		
 		Request request = PlugsFactory.getPluginsInstance(Request.class);
 		System.err.println(request);
