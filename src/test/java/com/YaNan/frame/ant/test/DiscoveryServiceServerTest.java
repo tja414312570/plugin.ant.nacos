@@ -7,7 +7,9 @@ import com.yanan.framework.a.channel.socket.server.MessageChannelCreateListener;
 import com.yanan.framework.a.core.MessageChannel;
 import com.yanan.framework.a.core.cluster.ChannelManager;
 import com.yanan.framework.a.core.server.ServerMessageChannel;
+import com.yanan.framework.a.dispatcher.ChannelDispatcher;
 import com.yanan.framework.a.nacos.NacosConfigureFactory;
+import com.yanan.framework.a.proxy.Invoker;
 import com.yanan.framework.ant.nacos.AntNacosConfigureFactory;
 import com.yanan.framework.plugin.Environment;
 import com.yanan.framework.plugin.PlugsFactory;
@@ -32,20 +34,18 @@ public class DiscoveryServiceServerTest
         
         Properties properties = NacosConfigureFactory.build("classpath:ant.yc");
         
-        final ChannelManager<?> server = PlugsFactory.getPluginsInstance(ChannelManager.class,properties);
+        ChannelManager<?> server = PlugsFactory.getPluginsInstance(ChannelManager.class,properties);
         
-        final ServerMessageChannel<String> client = PlugsFactory.getPluginsInstance(ServerMessageChannel.class);
-        client.onChannelCreate(new MessageChannelCreateListener<String>() {
-
-			@Override
-			public void onCreate(MessageChannel<String> messageChannel) {
-				messageChannel.accept(message->{
-					System.out.println("得到消息:"+message);
-				});
-			}
-		});
+        ServerMessageChannel<String> client = PlugsFactory.getPluginsInstance(ServerMessageChannel.class);
+        
         server.start(client);
-        
+        ChannelDispatcher<Object> channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
+		System.err.println(channelDispatcher);
+		channelDispatcher.bind(server);
+		
+		Invoker invoker = PlugsFactory.getPluginsInstance(Invoker.class);
+		
+		channelDispatcher.bind(invoker);
 //        final MessageChannel<?> messageChannel = (MessageChannel<?>)server.getChannel("default");
 //		System.out.println(messageChannel);
 	}

@@ -7,8 +7,8 @@ import com.YaNan.test.ant.Request;
 import com.yanan.framework.a.core.MessageChannel;
 import com.yanan.framework.a.core.cluster.ChannelManager;
 import com.yanan.framework.a.dispatcher.ChannelDispatcher;
-import com.yanan.framework.a.dispatcher.Invoker;
 import com.yanan.framework.a.nacos.NacosConfigureFactory;
+import com.yanan.framework.a.proxy.Invoker;
 import com.yanan.framework.ant.nacos.AntNacosConfigureFactory;
 import com.yanan.framework.plugin.Environment;
 import com.yanan.framework.plugin.PlugsFactory;
@@ -34,7 +34,7 @@ public class DiscoveryServiceTest {
 
 		server.start();
 
-		ChannelDispatcher<?> channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
+		ChannelDispatcher<Object> channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
 		System.err.println(channelDispatcher);
 		channelDispatcher.bind(server);
 		
@@ -42,10 +42,12 @@ public class DiscoveryServiceTest {
 		
 		channelDispatcher.bind(invoker);
 		
-		channelDispatcher.request(null);
+//		channelDispatcher.request("defaultName","hello world");
 		
 		Request request = PlugsFactory.getPluginsInstance(Request.class);
 		System.err.println(request);
+		Object result = request.add(10, 20);
+		System.err.println(result);
 //		MessageChannel<String> messageChannel =server.getChannel("defaultName");
 //		System.err.println(messageChannel);
 //		messageChannel.transport("Hello");
