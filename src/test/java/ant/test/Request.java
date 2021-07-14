@@ -1,4 +1,4 @@
-package com.YaNan.test.ant;
+package ant.test;
 
 import com.yanan.framework.a.proxy.Ant;
 
