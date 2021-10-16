@@ -4,7 +4,7 @@ import com.yanan.framework.plugin.annotations.*;
 import java.io.*;
 
 @Register
-public class AntTest1 implements AntService1
+public class AntTest1 implements Provider
 {
     @Override
     public int add(final int a, final int b) {

@@ -17,10 +17,12 @@ import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.client.naming.NacosNamingService;
 import com.alibaba.nacos.client.naming.net.NamingProxy;
+import com.yanan.framework.a.core.cluster.ChannelManager;
 import com.yanan.framework.ant.handler.AntServiceInstance;
 import com.yanan.framework.ant.interfaces.AntDiscoveryService;
 import com.yanan.framework.ant.model.AntProvider;
 import com.yanan.framework.ant.model.AntProviderSummary;
+import com.yanan.framework.ant.nacos.AntNacosDiscovery;
 import com.yanan.framework.ant.service.AntRuntimeService;
 import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.framework.plugin.annotations.Register;
@@ -33,7 +35,6 @@ public class NacosRuntime {
 	private NamingService namaingService;
 	private Properties properties;
 	private AntRuntimeService runtimeService;
-	private AntDiscoveryService nacosDiscovery;
 	@Service
 	private static Logger logger ;
 	List<String> eventList = new ArrayList<String>(16);
@@ -52,9 +53,12 @@ public class NacosRuntime {
 			AppClassLoader loader = new AppClassLoader(serverProxy);
 			loader.set("serverPort", Integer.parseInt(properties.getProperty("port")));
 			//添加AntDiscoverService
-			PlugsFactory.getInstance().addDefinition(AntNacosDiscovery.class);
+			ChannelManager<NacosInstance> channelManager = PlugsFactory.getPluginsInstance(ChannelManager.class);
+			NacosInstance nacosInstance = new NacosInstance();
+			nacosInstance.setClusterName(path);
 			nacosDiscovery = PlugsFactory.getPluginsInstance(AntDiscoveryService.class);
-			((AntNacosDiscovery)nacosDiscovery).setNacosRuntime(this);
+			((Nacos)nacosDiscovery).setNacosRuntime(this);
+			channelManager.registerChannel(null, null);
 		} catch (NacosException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | IOException e) {
 			throw new RuntimeException("failed to init nacos server!",e);
 		}

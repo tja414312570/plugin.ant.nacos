@@ -2,6 +2,7 @@ package com.yanan.framework.a.nacos;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -49,7 +50,7 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance,Na
 	public Properties getProperties() {
 		return properties;
 	}
-
+	
     public void registerChannel(final NacosInstance instance, final ServerMessageChannel<?> channel) {
         System.err.println("注册通道:" + instance + "--->" + channel);
         try {
@@ -84,12 +85,24 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance,Na
     public void close() {
     }
 	@Override
-	public <T, I> Map<String, List<MessageChannel<T>>> getAllChannel() {
+	public <T> Map<String, List<MessageChannel<T>>> getAllChannel() {
 		return null;
 	}
+	@SuppressWarnings("unchecked")
 	@Override
-	protected <T> List<MessageChannel<T>> getChannelInstanceList(NacosInstance serverName) {
-		return null;
+	protected <T> List<MessageChannel<T>> getChannelInstanceList(NacosInstance nacosInstance) {
+		List<Instance> instances;
+		try {
+			instances = namaingService.getAllInstances(nacosInstance.getName());
+		} catch (NacosException e) {
+		     throw new NacosChannelException("exception on get nacos instance",e);
+		}
+		List<MessageChannel<T>> messageChannels = new ArrayList<>();
+		instances.forEach(instance ->{
+			MessageChannel<T> messageChannel = (MessageChannel<T>) channelCreator.creatorChannel(instance);
+			messageChannels.add(messageChannel);
+		});
+		return messageChannels;
 	}
 	@SuppressWarnings("unchecked")
 	@Override
