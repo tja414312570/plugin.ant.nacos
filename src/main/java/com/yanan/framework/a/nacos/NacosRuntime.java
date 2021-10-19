@@ -17,7 +17,7 @@ import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.client.naming.NacosNamingService;
 import com.alibaba.nacos.client.naming.net.NamingProxy;
-import com.yanan.framework.a.core.cluster.ChannelManager;
+import com.yanan.framework.ant.core.cluster.ChannelManager;
 import com.yanan.framework.ant.handler.AntServiceInstance;
 import com.yanan.framework.ant.interfaces.AntDiscoveryService;
 import com.yanan.framework.ant.model.AntProvider;

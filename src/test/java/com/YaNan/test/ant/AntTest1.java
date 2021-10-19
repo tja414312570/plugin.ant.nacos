@@ -8,7 +8,7 @@ public class AntTest1 implements Provider
 {
     @Override
     public int add(final int a, final int b) {
-        System.out.println(this);
+//        System.out.println(this);
         return a + b;
     }
     
@@ -21,4 +21,9 @@ public class AntTest1 implements Provider
     public InputStream getInputStream(final File file) throws FileNotFoundException {
         return new FileInputStream(file);
     }
+
+	@Override
+	public String parseString(byte[] bytes) {
+		return new String(bytes);
+	}
 }

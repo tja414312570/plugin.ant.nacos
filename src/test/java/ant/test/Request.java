@@ -1,6 +1,6 @@
 package ant.test;
 
-import com.yanan.framework.a.proxy.Ant;
+import com.yanan.framework.ant.proxy.Ant;
 
 @Ant("defaultName")
 public interface Request

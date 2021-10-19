@@ -1,14 +1,14 @@
 package com.yanan.framework.a.nacos;
 
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.yanan.framework.a.channel.socket.SocketMessageChannel;
-import com.yanan.framework.a.core.MessageChannel;
-import com.yanan.framework.a.core.cluster.ChannelCreator;
+import com.yanan.framework.ant.channel.socket.SocketMessageChannel;
+import com.yanan.framework.ant.core.MessageChannel;
+import com.yanan.framework.ant.core.cluster.ChannelCreator;
 import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.framework.plugin.annotations.Register;
 import com.yanan.utils.reflect.TypeToken;
 
-@Register(attribute = "Instance")
+@Register(attribute = "com.alibaba.nacos.api.naming.pojo.Instance")
 public class NacosSocketChannelCreator<T> implements ChannelCreator<T, Instance>{
 
 	@Override

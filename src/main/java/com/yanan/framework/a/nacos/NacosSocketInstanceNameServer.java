@@ -1,6 +1,6 @@
 package com.yanan.framework.a.nacos;
 
-import com.yanan.framework.a.core.cluster.ChannelInstanceNameServer;
+import com.yanan.framework.ant.core.cluster.ChannelInstanceNameServer;
 import com.yanan.framework.plugin.annotations.Register;
 
 @Register(attribute="String_NacosChannelManager")

@@ -1,0 +1,8 @@
+nacos:{
+	serverAddr:"127.0.0.1:8848",
+	username:"nacos"
+	password:"nacos"
+	group:"queue",
+	name:"queue",
+	namespace:"",
+}

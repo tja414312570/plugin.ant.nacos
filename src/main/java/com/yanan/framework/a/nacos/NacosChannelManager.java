@@ -1,7 +1,5 @@
 package com.yanan.framework.a.nacos;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,18 +11,15 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.alibaba.nacos.client.naming.NacosNamingService;
-import com.alibaba.nacos.client.naming.net.NamingProxy;
-import com.yanan.framework.a.core.MessageChannel;
-import com.yanan.framework.a.core.cluster.AbstractChannelManager;
-import com.yanan.framework.a.core.cluster.ChannelCreator;
-import com.yanan.framework.a.core.cluster.ChannelManager;
-import com.yanan.framework.a.core.server.ServerMessageChannel;
+import com.yanan.framework.ant.core.MessageChannel;
+import com.yanan.framework.ant.core.cluster.AbstractChannelManager;
+import com.yanan.framework.ant.core.cluster.ChannelCreator;
+import com.yanan.framework.ant.core.cluster.ChannelManager;
+import com.yanan.framework.ant.core.server.ServerMessageChannel;
 import com.yanan.framework.plugin.annotations.Register;
 import com.yanan.framework.plugin.annotations.Service;
+import com.yanan.framework.plugin.autowired.enviroment.Variable;
 import com.yanan.utils.asserts.Assert;
-import com.yanan.utils.reflect.AppClassLoader;
-import com.yanan.utils.reflect.cache.ClassHelper;
 
 @Register
 public class NacosChannelManager extends AbstractChannelManager<NacosInstance,NacosInstance> implements ChannelManager<NacosInstance>
@@ -32,6 +27,7 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance,Na
 	@Service
 	private Logger logger;
 	private NamingService namaingService;
+	@Variable("nacos")
 	private Properties properties;
 	
 	@Service(attribute = "com.alibaba.nacos.api.naming.pojo.Instance")
@@ -69,15 +65,8 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance,Na
 			logger.debug("Ant Nacos servcie config "+properties);
 			//创建命名服务
 			namaingService = NamingFactory.createNamingService(properties);
-			//设置端口
-			Field serverProxyField = ClassHelper.getClassHelper(NacosNamingService.class).getDeclaredField("serverProxy");
-			serverProxyField.setAccessible(true);
-			NamingProxy serverProxy = (NamingProxy) serverProxyField.get(namaingService);
-			serverProxyField.setAccessible(false);
-			AppClassLoader loader = new AppClassLoader(serverProxy);
-			loader.set("serverPort", Integer.parseInt(properties.getProperty("port")));
 			//添加AntDiscoverService
-		} catch (NacosException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (NacosException | IllegalArgumentException | SecurityException e) {
 			throw new RuntimeException("failed to init nacos server!",e);
 		}
     }
@@ -118,7 +107,7 @@ public class NacosChannelManager extends AbstractChannelManager<NacosInstance,Na
 			messageChannel.open();
 			return messageChannel;
 		} catch (NacosException e) {
-			throw new RuntimeException(e);
+			 throw new NacosChannelException("exception on get nacos instance "+name,e);
 		}
 	}
 }

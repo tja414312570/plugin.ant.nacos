@@ -8,5 +8,7 @@ public interface Provider
     
     void exec(final Runnable p0);
     
+    String parseString(byte[] bytes);
+    
     InputStream getInputStream(final File p0) throws FileNotFoundException;
 }
