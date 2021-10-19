@@ -24,7 +24,7 @@ public class Server {
         		new StandScanResource(ResourceManager.getClassPath(MessageChannel.class)[0] + "**"), 
         		new StandScanResource(ResourceManager.getClassPath(NacosInstance.class)[0] + "**"), 
         		new StandScanResource(ResourceManager.getClassPath(Config2PropertiesAdapter.class)[0] + "com.yanan.fram**") ,
-        new StandScanResource(ResourceManager.getClassPath(DiscoveryServiceServerTest.class)[0] + "**") );
+        new StandScanResource(ResourceManager.getClassPath(DefaultLogger.class)[0] + "**") );
         
         ChannelManager<Object> channelManager = PlugsFactory.getPluginsInstance(ChannelManager.class);
         

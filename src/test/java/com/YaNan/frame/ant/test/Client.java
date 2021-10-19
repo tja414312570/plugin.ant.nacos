@@ -5,6 +5,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.YaNan.test.ant.Provider;
+import com.yanan.framework.a.nacos.NacosChannelManager;
 import com.yanan.framework.a.nacos.NacosInstance;
 import com.yanan.framework.ant.core.MessageChannel;
 import com.yanan.framework.ant.core.cluster.ChannelManager;
@@ -26,7 +27,7 @@ public class Client {
         		new StandScanResource(ResourceManager.getClassPath(MessageChannel.class)[0] + "**"), 
         		new StandScanResource(ResourceManager.getClassPath(NacosInstance.class)[0] + "**"), 
         		new StandScanResource(ResourceManager.getClassPath(Config2PropertiesAdapter.class)[0] + "com.yanan.fram**") ,
-        new StandScanResource(ResourceManager.getClassPath(DiscoveryServiceServerTest.class)[0] + "**") );
+        new StandScanResource(ResourceManager.getClassPath(DefaultLogger.class)[0] + "**") );
         
         ChannelManager<Object> channelManager = PlugsFactory.getPluginsInstance(ChannelManager.class);
         
