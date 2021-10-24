@@ -1,30 +1,27 @@
 package com.YaNan.frame.ant.test;
 
-import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.util.List;
 
-import com.YaNan.test.ant.Provider;
-import com.yanan.framework.a.nacos.NacosInstance;
-import com.yanan.framework.ant.core.MessageChannel;
 import com.yanan.framework.ant.core.cluster.ChannelManager;
 import com.yanan.framework.ant.core.server.ServerMessageChannel;
 import com.yanan.framework.ant.dispatcher.ChannelDispatcher;
-import com.yanan.framework.ant.proxy.Callback;
-import com.yanan.framework.ant.proxy.Invokers;
 import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.framework.plugin.decoder.StandScanResource;
-import com.yanan.framework.resource.adapter.Config2PropertiesAdapter;
-import com.yanan.utils.reflect.TypeToken;
-import com.yanan.utils.reflect.cache.ClassHelper;
 import com.yanan.utils.resource.ResourceManager;
+import com.yanan.utils.string.PathMatcher;
+import com.yanan.utils.string.PathMatcher.Token;
 
 public class Server {
 	public static void main(String[] args) {
-		PlugsFactory.init(ResourceManager.getResource("classpath:plugin.yc"), 
+//		
+//		List<Token> token = PathMatcher.getPathMatcher("socket:{ant.server.addr}").getTokens();
+//		System.err.println(PathMatcher.match("socket:{ant.server.addr}", "socket:xlxx").getTokens());
+//		System.err.println(token);
+		PlugsFactory.init(
         		ResourceManager.getResource("classpath:Ant2.yc"), 
-        		new StandScanResource(ResourceManager.getClassPath(MessageChannel.class)[0] + "**"), 
-        		new StandScanResource(ResourceManager.getClassPath(NacosInstance.class)[0] + "**"), 
-        		new StandScanResource(ResourceManager.getClassPath(Config2PropertiesAdapter.class)[0] + "com.yanan.fram**") ,
-        new StandScanResource(ResourceManager.getClassPath(DefaultLogger.class)[0] + "**") );
+        		new StandScanResource( "classpath*:**")
+        		);
         
         ChannelManager<Object> channelManager = PlugsFactory.getPluginsInstance(ChannelManager.class);
         

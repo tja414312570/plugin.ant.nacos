@@ -1,4 +1,8 @@
 package ant.test;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import com.alibaba.nacos.common.utils.InternetAddressUtil;
 import com.yanan.framework.plugin.annotations.Register;
 
 @Register
@@ -14,7 +18,8 @@ public class Test implements Request{
 		return i*j;
 	}
 	
-	public static void main(String[] args) {
-		System.err.println(String.valueOf(null));
+	public static void main(String[] args) throws UnknownHostException {
+		 InetAddress addr = InetAddress.getLocalHost();
+		System.err.println(addr);
 	}
 }

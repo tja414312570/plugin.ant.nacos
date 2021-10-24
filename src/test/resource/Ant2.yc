@@ -6,3 +6,7 @@ nacos:{
 	name:"queue",
 	namespace:"",
 }
+#ant.server.addr:"localhost:4280"
+ant.buffer.type:"HEAP"
+ant.buffer.max:204800
+ant.buffer.size:1024

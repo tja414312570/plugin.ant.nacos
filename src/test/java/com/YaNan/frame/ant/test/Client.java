@@ -22,12 +22,10 @@ import com.yanan.utils.resource.ResourceManager;
 
 public class Client {
 	public static void main(String[] args) throws InterruptedException {
-		PlugsFactory.init(ResourceManager.getResource("classpath:plugin.yc"), 
+		PlugsFactory.init(
         		ResourceManager.getResource("classpath:Ant2.yc"), 
-        		new StandScanResource(ResourceManager.getClassPath(MessageChannel.class)[0] + "**"), 
-        		new StandScanResource(ResourceManager.getClassPath(NacosInstance.class)[0] + "**"), 
-        		new StandScanResource(ResourceManager.getClassPath(Config2PropertiesAdapter.class)[0] + "com.yanan.fram**") ,
-        new StandScanResource(ResourceManager.getClassPath(DefaultLogger.class)[0] + "**") );
+        		new StandScanResource( "classpath*:**")
+        		);
         
         ChannelManager<Object> channelManager = PlugsFactory.getPluginsInstance(ChannelManager.class);
         
