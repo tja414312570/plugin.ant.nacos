@@ -12,7 +12,7 @@ public class NacosSocketNamingServer implements ChannelNamingServer<NacosInstanc
         System.err.println(messageChannel.getClass());
         System.err.println(messageChannel.getClass());
         final NacosInstance nacosInstance = new NacosInstance();
-        nacosInstance.setHost("192.168.0.104");
+        nacosInstance.setHost("127.0.0.1");
         nacosInstance.setGroup("default");
         nacosInstance.setName("defaultName");
         nacosInstance.setPort(messageChannel.getServerAddr().getPort());

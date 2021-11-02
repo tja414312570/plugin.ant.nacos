@@ -1,5 +1,7 @@
-package com.YaNan.test.ant;
+package com.yanan.test.ant;
 
 public interface Media {
     byte[] byffer() ;
+    
+    void subscribe();
 }

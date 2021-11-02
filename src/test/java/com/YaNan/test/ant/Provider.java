@@ -1,6 +1,8 @@
-package com.YaNan.test.ant;
+package com.yanan.test.ant;
 
 import java.io.*;
+
+import com.yanan.framework.ant.dispatcher.DispatcherContext;
 
 public interface Provider
 {
@@ -11,4 +13,6 @@ public interface Provider
     String parseString(byte[] bytes);
     
     InputStream getInputStream(final File p0) throws FileNotFoundException;
+    
+    void notify(String args);
 }

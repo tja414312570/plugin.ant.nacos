@@ -1,4 +1,4 @@
-package com.YaNan.frame.ant.test;
+package com.yanan.frame.ant.test;
 
 import com.yanan.framework.plugin.annotations.*;
 import com.yanan.framework.plugin.autowired.plugin.*;

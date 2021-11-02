@@ -1,10 +1,10 @@
-package com.YaNan.frame.ant.test;
+package com.yanan.frame.ant.test;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.YaNan.test.ant.Provider;
+import com.yanan.test.ant.Provider;
 import com.yanan.framework.a.nacos.NacosChannelManager;
 import com.yanan.framework.a.nacos.NacosInstance;
 import com.yanan.framework.ant.core.MessageChannel;
@@ -49,14 +49,10 @@ public class Client {
 		
 		result = channelDispatcher.request("defaultName", invokers);
 		System.out.println("执行结果2:"+result);
-		Callback<Integer> callback =Callback.newCallback(invokers);
-		callback.on((res,dispatcher)->{
+		Callback<Integer> callback =(res,dispatcher)->{
 			System.err.println("异步结果:"+res);
 			System.err.println("调配器结果:"+dispatcher);
-		}, (err,dispatcher)->{
-			System.err.println("异步错误:"+err);
-			System.err.println("调配器结果:"+dispatcher);
-		});
+		};
 		channelDispatcher.requestAsync("defaultName", invokers,callback );
 		System.err.println("调用结束");
 		invokers.setInvokeMethod(method);
@@ -73,14 +69,10 @@ public class Client {
 		System.out.println("串行执行耗时:"+times+"ms,吞吐率:"+(counts/times)+" 个/ms，平均耗时:"+(times/counts)+"ms");
 		CountDownLatch lotch = new CountDownLatch((int) counts);
 		now = System.currentTimeMillis();
-		callback =Callback.newCallback(invokers);
-		callback.on((res,dispatcher)->{
+		callback =(res,dispatcher)->{
 			lotch.countDown();
 //			System.err.println(lotch.getCount()+"--->"+atomicInteger.get()+"-->"+res);
-		}, (err,dispatcher)->{
-			System.err.println("异步错误:"+err);
-			System.err.println("调配器结果:"+dispatcher);
-		});
+		};
 		for(int i = 0;i<counts;i++) {
 			invokers.setInvokeParmeters(1,2);
 			channelDispatcher.requestAsync("defaultName", invokers,callback );

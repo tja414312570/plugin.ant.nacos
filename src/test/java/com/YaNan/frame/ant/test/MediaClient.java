@@ -1,36 +1,27 @@
-package com.YaNan.frame.ant.test;
+package com.yanan.frame.ant.test;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.YaNan.test.ant.Media;
-import com.YaNan.test.ant.Provider;
-import com.yanan.framework.a.nacos.NacosChannelManager;
 import com.yanan.framework.a.nacos.NacosInstance;
-import com.yanan.framework.ant.core.MessageChannel;
 import com.yanan.framework.ant.core.cluster.ChannelManager;
-import com.yanan.framework.ant.core.server.ServerMessageChannel;
 import com.yanan.framework.ant.dispatcher.ChannelDispatcher;
 import com.yanan.framework.ant.proxy.Callback;
 import com.yanan.framework.ant.proxy.Invokers;
 import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.framework.plugin.decoder.StandScanResource;
-import com.yanan.framework.resource.adapter.Config2PropertiesAdapter;
-import com.yanan.utils.reflect.TypeToken;
+import com.yanan.test.ant.Media;
 import com.yanan.utils.reflect.cache.ClassHelper;
 import com.yanan.utils.resource.ResourceManager;
 
@@ -49,7 +40,6 @@ public class MediaClient {
         
         ChannelManager<Object> channelManager = PlugsFactory.getPluginsInstance(ChannelManager.class);
         
-        
         channelManager.start();
         ChannelDispatcher channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
 		System.err.println(channelDispatcher);
@@ -57,39 +47,19 @@ public class MediaClient {
 		
 		Invokers invokers = new Invokers();
 		invokers.setInvokeClass(Media.class);
-		Method method = ClassHelper.getClassHelper(Media.class).getMethod("byffer");
+		Method method = ClassHelper.getClassHelper(Media.class).getMethod("subscribe");
 		invokers.setInvokeMethod(method);
 		invokers.setInvokeParmeters();
 		NacosInstance nacosInstance = new NacosInstance();
 		nacosInstance.setName("defaultName");
 		
-//		for(int i = 0;i<10000;i++) {
-//			byte[] res = (byte[]) channelDispatcher.request("defaultName", invokers);
-//			BufferedImage bufferedImage = createImageFromBytes(res);
-//			showImage(bufferedImage, new Dimension(1280,720));
-//		}
-		
-		Callback<byte[]> callback = Callback.newCallback(invokers);
-		callback.on((res,dispatcher)->{
-			BufferedImage bufferedImage;
-			System.err.println("响应"+dispatcher);
-			try {
-				bufferedImage = createImageFromBytes(res);
-				showImage(bufferedImage, new Dimension(1280,720));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}, (err,dispatcher)->{
-			System.err.println("异步错误:"+err);
-			System.err.println("调配器结果:"+dispatcher);
-		});
-		new Thread(()->{
-			while(true) {
-				 channelDispatcher.requestAsync("defaultName", invokers,callback);
-			}
-			
-		}).start();
-			
+		channelDispatcher.subscribe("defaultName",invokers, (ctx,res)->{
+		BufferedImage bufferedImage;
+			System.err.println(((byte[])res).length/1024+" kb/帧");
+//				bufferedImage = createImageFromBytes((byte[])res);
+			showImage((Image) res, new Dimension(1280,720));
+		}
+		);
 //		System.out.println("执行结果:"+result);
 		System.out.println("服务列表:"+channelManager.getChannelList("defaultName"));
 		
@@ -105,7 +75,6 @@ public class MediaClient {
      * @param size
      */
     public static void showImage(Image image, Dimension size) {
-    		System.err.println("草泥马:"+image);
     	if(frame == null) {
     		 frame = new JFrame();
     	        frame.setSize(size);

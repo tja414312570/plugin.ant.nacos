@@ -1,4 +1,4 @@
-package com.YaNan.frame.ant.test;
+package com.yanan.frame.ant.test;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
