@@ -23,12 +23,12 @@ public class Server {
         		new StandScanResource( "classpath*:**")
         		);
         
-        ChannelManager<Object> channelManager = PlugsFactory.getPluginsInstance(ChannelManager.class);
-        
-        ServerMessageChannel<String> client = PlugsFactory.getPluginsInstance(ServerMessageChannel.class);
-        
-        channelManager.start(client);
-        ChannelDispatcher channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
-      	channelDispatcher.bind(channelManager);
+//        ChannelManager<Object> channelManager = PlugsFactory.getPluginsInstance(ChannelManager.class);
+//        
+//        ServerMessageChannel<String> client = PlugsFactory.getPluginsInstance(ServerMessageChannel.class);
+//        
+//        channelManager.start(client);
+//        ChannelDispatcher channelDispatcher = PlugsFactory.getPluginsInstance(ChannelDispatcher.class);
+//      	channelDispatcher.bind(channelManager);
 	}
 }
